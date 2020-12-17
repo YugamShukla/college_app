@@ -1,6 +1,8 @@
 import 'package:college_app/faculty.dart';
 import 'package:flutter/material.dart';
 
+import 'constants.dart';
+
 class DepartmentList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -8,17 +10,31 @@ class DepartmentList extends StatelessWidget {
       title: "Department Lists",
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Departement List"),
+          title: Text("Department List"),
+          backgroundColor: xDarkBlue,
         ),
-        body: GridView.count(
-          crossAxisCount: 2,
-          children: List.generate(
-            choices.length,
-            (index) {
-              return Center(
-                child: SelectCard(choice: choices[index]),
-              );
-            },
+        body: Container(
+          decoration: BoxDecoration(
+            // gradient: LinearGradient(
+            //   begin: Alignment.topLeft,
+            //   end: Alignment.bottomRight,
+            //   colors: [
+            //     xLightYellow,
+            //     xOrange,
+            //   ],
+            // ),
+            color: xLightBlue,
+          ),
+          child: GridView.count(
+            crossAxisCount: 2,
+            children: List.generate(
+              choices.length,
+              (index) {
+                return Center(
+                  child: SelectCard(choice: choices[index]),
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -45,9 +61,12 @@ class SelectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle textStyle = Theme.of(context).textTheme.display1;
+    final TextStyle textStyle = TextStyle(
+      color: xLightBlue,
+      fontSize: 30,
+    );
     return Card(
-      color: Colors.lightGreenAccent,
+      color: xDarkBlue,
       child: Center(
           child: FlatButton(
         onPressed: () => Navigator.push(
@@ -57,12 +76,17 @@ class SelectCard extends StatelessWidget {
           ),
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Expanded(
-                child: Icon(choice.icon, size: 50.0, color: textStyle.color)),
-            Text(choice.title, style: textStyle),
+            Icon(
+              choice.icon,
+              size: 50.0,
+              color: xLightBlue,
+            ),
+            Text(
+              choice.title,
+              style: textStyle,
+            ),
           ],
         ),
       )),

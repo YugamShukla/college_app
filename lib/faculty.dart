@@ -2,6 +2,8 @@ import 'package:college_app/awards_faculty.dart';
 import 'package:college_app/research_faculty.dart';
 import 'package:flutter/material.dart';
 
+import 'constants.dart';
+
 class Faculty extends StatefulWidget {
   @override
   _FacultyState createState() => _FacultyState();
@@ -15,10 +17,10 @@ class _FacultyState extends State<Faculty> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Color(0xffffffff),
+            backgroundColor: xLightBlue,
             bottom: TabBar(
-              labelColor: Colors.orangeAccent,
-              unselectedLabelColor: Colors.grey,
+              labelColor: xOrange,
+              unselectedLabelColor: Colors.white,
               tabs: [
                 Tab(
                   text: "Research",
@@ -29,10 +31,22 @@ class _FacultyState extends State<Faculty> {
               ],
             ),
           ),
-          body: TabBarView(children: [
-            FacultyResearch(),
-            FacultyAwards(),
-          ]),
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  xLightYellow,
+                  xOrange,
+                ],
+              ),
+            ),
+            child: TabBarView(children: [
+              FacultyResearch(),
+              FacultyAwards(),
+            ]),
+          ),
         ),
       ),
     );
