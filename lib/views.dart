@@ -2,6 +2,7 @@ import 'package:college_app/constants.dart';
 import 'package:college_app/department.dart';
 import 'package:college_app/faculty.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class Views extends StatefulWidget {
   @override
@@ -58,43 +59,136 @@ class _ViewsState extends State<Views> {
                   new Container(
                     height: 20,
                   ),
-                  FlatButton(
+                  // FlatButton(
+                  //   padding:
+                  //       EdgeInsets.symmetric(vertical: 16.0, horizontal: 100),
+                  //   shape: RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.circular(24),
+                  //   ),
+                  //   onPressed: () => Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => DepartmentList(),
+                  //     ),
+                  //   ),
+                  //   child: Text("Faculty Stats"),
+                  //   textColor: Colors.white,
+                  //   color: xLightBlue,
+                  // ),
+                  // new Container(
+                  //   height: 20,
+                  // ),
+                  // FlatButton(
+                  //   padding:
+                  //       EdgeInsets.symmetric(vertical: 16.0, horizontal: 100),
+                  //   shape: RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.circular(24),
+                  //   ),
+                  // onPressed: () => Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => DepartmentList(),
+                  //   ),
+                  // ),
+                  //   child: Text("Student Stats"),
+                  //   textColor: Colors.white,
+                  //   color: xLightBlue,
+                  // ),
+                  // Container(
+                  //   height: 20,
+                  // ),
+
+                  StaggeredGridView.count(
+                    shrinkWrap: true,
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 12.0,
+                    mainAxisSpacing: 12.0,
                     padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 100),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DepartmentList(),
+                        EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                    children: <Widget>[
+                      RaisedButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DepartmentList(),
+                          ),
+                        ),
+                        child: Text("A"),
                       ),
-                    ),
-                    child: Text("Faculty Stats"),
-                    textColor: Colors.white,
-                    color: xLightBlue,
-                  ),
-                  new Container(
-                    height: 20,
-                  ),
-                  FlatButton(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 100),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DepartmentList(),
+                      RaisedButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DepartmentList(),
+                          ),
+                        ),
+                        child: Text("B"),
                       ),
-                    ),
-                    child: Text("Student Stats"),
-                    textColor: Colors.white,
-                    color: xLightBlue,
-                  ),
-                  Container(
-                    height: 20,
+                      RaisedButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DepartmentList(),
+                          ),
+                        ),
+                        child: Text("C"),
+                      ),
+                      RaisedButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DepartmentList(),
+                          ),
+                        ),
+                        child: Text("D"),
+                      ),
+                      RaisedButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DepartmentList(),
+                          ),
+                        ),
+                        child: Text("E"),
+                      ),
+                      RaisedButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DepartmentList(),
+                          ),
+                        ),
+                        child: Text("F"),
+                      ),
+                      RaisedButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DepartmentList(),
+                          ),
+                        ),
+                        child: Text("G"),
+                      ),
+                      RaisedButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DepartmentList(),
+                          ),
+                        ),
+                        child: Text("H"),
+                      ),
+                    ],
+                    staggeredTiles: [
+                      StaggeredTile.extent(2, 50.0),
+                      StaggeredTile.extent(2, 50.0),
+                      StaggeredTile.extent(4, 50.0),
+                      StaggeredTile.extent(1, 50.0),
+                      StaggeredTile.extent(2, 50.0),
+                      StaggeredTile.extent(1, 50.0),
+                      StaggeredTile.extent(2, 50.0),
+                      StaggeredTile.extent(2, 50.0),
+                    ],
                   ),
                 ],
               ),
