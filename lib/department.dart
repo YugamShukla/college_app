@@ -4,6 +4,18 @@ import 'package:flutter/material.dart';
 import 'constants.dart';
 
 class DepartmentList extends StatelessWidget {
+  DepartmentList({
+    this.xvalues,
+    this.yvalues,
+    this.graph,
+    this.xlabel,
+    this.ylabel,
+  });
+  List xvalues;
+  List yvalues;
+  int graph;
+  String xlabel;
+  String ylabel;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +43,14 @@ class DepartmentList extends StatelessWidget {
               choices.length,
               (index) {
                 return Center(
-                  child: SelectCard(choice: choices[index]),
+                  child: SelectCard(
+                    choice: choices[index],
+                    graph: graph,
+                    xlabel: xlabel,
+                    xvalues: xvalues,
+                    ylabel: ylabel,
+                    yvalues: yvalues,
+                  ),
                 );
               },
             ),
@@ -56,8 +75,21 @@ const List<Choice> choices = const <Choice>[
 ];
 
 class SelectCard extends StatelessWidget {
-  const SelectCard({Key key, this.choice}) : super(key: key);
+  const SelectCard({
+    Key key,
+    this.choice,
+    this.xvalues,
+    this.yvalues,
+    this.graph,
+    this.xlabel,
+    this.ylabel,
+  }) : super(key: key);
   final Choice choice;
+  final List xvalues;
+  final List yvalues;
+  final int graph;
+  final String xlabel;
+  final String ylabel;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +104,13 @@ class SelectCard extends StatelessWidget {
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Faculty(),
+            builder: (context) => Faculty(
+              graph: this.graph,
+              xlabel: this.xlabel,
+              xvalues: this.xvalues,
+              ylabel: this.ylabel,
+              yvalues: this.yvalues,
+            ),
           ),
         ),
         child: Column(

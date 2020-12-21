@@ -5,6 +5,18 @@ import 'package:flutter/material.dart';
 import 'constants.dart';
 
 class Faculty extends StatefulWidget {
+  Faculty({
+    this.xvalues,
+    this.yvalues,
+    this.graph,
+    this.xlabel,
+    this.ylabel,
+  });
+  List xvalues;
+  List yvalues;
+  int graph;
+  String xlabel;
+  String ylabel;
   @override
   _FacultyState createState() => _FacultyState();
 }
@@ -44,7 +56,13 @@ class _FacultyState extends State<Faculty> {
             ),
             child: TabBarView(children: [
               FacultyResearch(),
-              FacultyAwards(),
+              FacultyAwards(
+                graph: widget.graph,
+                xlabel: widget.xlabel,
+                xvalues: widget.xvalues,
+                ylabel: widget.ylabel,
+                yvalues: widget.yvalues,
+              ),
             ]),
           ),
         ),
