@@ -33,31 +33,38 @@ class MyApp extends StatelessWidget {
 }
 
 class ChartBuilder extends StatefulWidget {
-  ChartBuilder({this.xvalues,this.yvalues,this.graph});
-  List xvalues;
-  List yvalues;
-  int graph;
-  @override
-  _ChartBuilderState createState() {
-    return _ChartBuilderState("ABC","ABC",[1,2,3,4],[25.0,25.0,25.0,25.0],0);
-  }
-}
-
-class _ChartBuilderState extends State<ChartBuilder> {
+  ChartBuilder({
+    this.xvalues,
+    this.yvalues,
+    this.graph,
+    this.xlabel,
+    this.ylabel,
+  });
   List xvalues;
   List yvalues;
   int graph;
   String xlabel;
   String ylabel;
-  _ChartBuilderState(this.xlabel,this.ylabel,this.xvalues,this.yvalues,this.graph);
+  @override
+  _ChartBuilderState createState() => _ChartBuilderState();
+}
+
+class _ChartBuilderState extends State<ChartBuilder> {
+  // List xvalues;
+  // List yvalues;
+  // int graph;
+  // String xlabel;
+  // String ylabel;
+  // _ChartBuilderState(
+  //     this.xlabel, this.ylabel, this.xvalues, this.yvalues, this.graph);
   List<charts.Series<LineChartValue, int>> _seriesLineData;
   List<charts.Series<BarChartValue, String>> _seriesBarData;
   List<charts.Series<PieChartValue, String>> _seriesPieData;
   RandomColor _randomColor = RandomColor();
-  _generatelineData(){
+  _generatelineData() {
     var linedata = [
-      for(int i=0;i<xvalues.length;i++)
-        new LineChartValue(xvalues[i], yvalues[i])
+      for (int i = 0; i < widget.xvalues.length; i++)
+        new LineChartValue(widget.xvalues[i], widget.yvalues[i])
     ];
     _seriesLineData.add(
       charts.Series(
@@ -69,10 +76,11 @@ class _ChartBuilderState extends State<ChartBuilder> {
       ),
     );
   }
-  _generatebarData(){
+
+  _generatebarData() {
     var bar = [
-      for(int i=0;i<xvalues.length;i++)
-        new BarChartValue(xvalues[i].toString(), yvalues[i])
+      for (int i = 0; i < widget.xvalues.length; i++)
+        new BarChartValue(widget.xvalues[i].toString(), widget.yvalues[i])
     ];
     _seriesBarData.add(
       charts.Series(
@@ -86,37 +94,38 @@ class _ChartBuilderState extends State<ChartBuilder> {
       ),
     );
   }
-  _generatepiedata(){
-    var pie = [
-      for(int i=0;i<xvalues.length;i++)
-        new PieChartValue(xvalues[i].toString(), yvalues[i], _randomColor.randomColor())
-    ];
-    _seriesPieData.add(
-      charts.Series(
-        domainFn: (PieChartValue task, _) => task.task,
-        measureFn: (PieChartValue task, _) => task.taskvalue,
-        colorFn: (PieChartValue task, _) =>
-            charts.ColorUtil.fromDartColor(task.colorval),
-        id: 'Air Pollution',
-        data: pie,
-        labelAccessorFn: (PieChartValue row, _) => '${row.taskvalue}',
-      ),
-    );
-  }
+
+  // _generatepiedata() {
+  //   var pie = [
+  //     for (int i = 0; i < widget.xvalues.length; i++)
+  //       new PieChartValue(widget.xvalues[i].toString(), widget.yvalues[i],
+  //           _randomColor.randomColor())
+  //   ];
+  //   _seriesPieData.add(
+  //     charts.Series(
+  //       domainFn: (PieChartValue task, _) => task.task,
+  //       measureFn: (PieChartValue task, _) => task.taskvalue,
+  //       colorFn: (PieChartValue task, _) =>
+  //           charts.ColorUtil.fromDartColor(task.colorval),
+  //       id: 'Air Pollution',
+  //       data: pie,
+  //       labelAccessorFn: (PieChartValue row, _) => '${row.taskvalue}',
+  //     ),
+  //   );
+  // }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _seriesLineData = List<charts.Series<LineChartValue, int>>();
     _seriesBarData = List<charts.Series<BarChartValue, String>>();
     _seriesPieData = List<charts.Series<PieChartValue, String>>();
-    if(graph == 2)
+    if (widget.graph == 0)
       _generatelineData();
-    else if(graph == 1)
-      _generatebarData();
-    else if(graph ==0)
-      _generatepiedata();
+    else if (widget.graph == 1) _generatebarData();
+    // else if (widget.graph == 2) _generatepiedata();
   }
+
   Material mylineChart(String title, int color) {
     return Material(
       color: Colors.white,
@@ -140,23 +149,67 @@ class _ChartBuilderState extends State<ChartBuilder> {
                 SizedBox(
                     width: 350,
                     height: 350,
-                    child: charts.LineChart(
-                        _seriesLineData,
+                    child: charts.LineChart(_seriesLineData,
                         defaultRenderer: new charts.LineRendererConfig(
                             includeArea: true, stacked: true),
                         animate: true,
-                        animationDuration: Duration(seconds: 3),
+                        animationDuration: Duration(seconds: 1),
                         behaviors: [
-                          new charts.ChartTitle(xlabel,
+                          new charts.ChartTitle(widget.xlabel,
                               behaviorPosition: charts.BehaviorPosition.bottom,
-                              titleOutsideJustification: charts
-                                  .OutsideJustification.middleDrawArea),
-                          new charts.ChartTitle(ylabel,
+                              titleOutsideJustification:
+                                  charts.OutsideJustification.middleDrawArea),
+                          new charts.ChartTitle(widget.ylabel,
                               behaviorPosition: charts.BehaviorPosition.start,
-                              titleOutsideJustification: charts
-                                  .OutsideJustification.middleDrawArea),
-                        ]
-                    )
+                              titleOutsideJustification:
+                                  charts.OutsideJustification.middleDrawArea),
+                        ]))
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Material myBarChart(String title, int color) {
+    return Material(
+      color: Colors.white,
+      elevation: 14.0,
+      shadowColor: Color(0x802196F3),
+      borderRadius: BorderRadius.circular(24.0),
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    title,
+                    style: TextStyle(color: new Color(color), fontSize: 20.0),
+                  ),
+                ),
+                SizedBox(
+                  width: 350.0,
+                  height: 350.0,
+                  child: charts.BarChart(
+                    _seriesBarData,
+                    animate: true,
+                    behaviors: [
+                      new charts.ChartTitle(widget.xlabel,
+                          behaviorPosition: charts.BehaviorPosition.bottom,
+                          titleOutsideJustification:
+                              charts.OutsideJustification.middleDrawArea),
+                      new charts.ChartTitle(widget.ylabel,
+                          behaviorPosition: charts.BehaviorPosition.start,
+                          titleOutsideJustification:
+                              charts.OutsideJustification.middleDrawArea),
+                    ],
+                    animationDuration: Duration(seconds: 1),
+                  ),
                 )
               ],
             )
@@ -165,52 +218,7 @@ class _ChartBuilderState extends State<ChartBuilder> {
       ),
     );
   }
-    Material myBarChart(String title, int color) {
-      return Material(
-        color: Colors.white,
-        elevation: 14.0,
-        shadowColor: Color(0x802196F3),
-        borderRadius: BorderRadius.circular(24.0),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      title,
-                      style: TextStyle(color: new Color(color), fontSize: 20.0),
-                    ),
-                  ),
-                  SizedBox(
-                      width: 350,
-                      height: 350,
-                      child: charts.BarChart(
-                        _seriesBarData,
-                        animate: true,
-                          behaviors: [
-                            new charts.ChartTitle(xlabel,
-                                behaviorPosition: charts.BehaviorPosition.bottom,
-                                titleOutsideJustification: charts
-                                    .OutsideJustification.middleDrawArea),
-                            new charts.ChartTitle(ylabel,
-                                behaviorPosition: charts.BehaviorPosition.start,
-                                titleOutsideJustification: charts
-                                    .OutsideJustification.middleDrawArea),
-                          ],
-                        animationDuration: Duration(seconds: 5),
-                      ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
-      );
-  }
+
   Material myPieChart(String title, int color) {
     return Material(
       color: Colors.white,
@@ -232,30 +240,31 @@ class _ChartBuilderState extends State<ChartBuilder> {
                   ),
                 ),
                 SizedBox(
-                    width: 350,
-                    height: 350,
-                    child: charts.PieChart(
-                      _seriesPieData,
+                  width: 350.0,
+                  height: 350.0,
+                  child: charts.PieChart(_seriesPieData,
                       animate: true,
-                      animationDuration: Duration(seconds: 5),
+                      animationDuration: Duration(seconds: 1),
                       behaviors: [
-                    new charts.DatumLegend(
-                    outsideJustification: charts.OutsideJustification.endDrawArea,
-                      horizontalFirst: false,
-                      desiredMaxRows: 2,
-                      cellPadding: new EdgeInsets.only(right: 4.0, bottom: 4.0),
-                      entryTextStyle: charts.TextStyleSpec(
-                          color: charts.MaterialPalette.purple.shadeDefault,
-                          fontFamily: 'Georgia',
-                          fontSize: 11),
-                    )
+                        new charts.DatumLegend(
+                          outsideJustification:
+                              charts.OutsideJustification.endDrawArea,
+                          horizontalFirst: false,
+                          desiredMaxRows: 2,
+                          cellPadding:
+                              new EdgeInsets.only(right: 4.0, bottom: 4.0),
+                          entryTextStyle: charts.TextStyleSpec(
+                              color: charts.MaterialPalette.purple.shadeDefault,
+                              fontFamily: 'Georgia',
+                              fontSize: 11),
+                        )
                       ],
-                        defaultRenderer: new charts.ArcRendererConfig(
-                            arcWidth: 100,
-                            arcRendererDecorators: [
-                              new charts.ArcLabelDecorator(
-                                  labelPosition: charts.ArcLabelPosition.inside)
-                            ])),
+                      defaultRenderer: new charts.ArcRendererConfig(
+                          arcWidth: 100,
+                          arcRendererDecorators: [
+                            new charts.ArcLabelDecorator(
+                                labelPosition: charts.ArcLabelPosition.inside)
+                          ])),
                 ),
               ],
             )
@@ -273,8 +282,10 @@ class _ChartBuilderState extends State<ChartBuilder> {
         crossAxisSpacing: 12.0,
         mainAxisSpacing: 12.0,
         padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-        children: <Widget>
-        [graph==1? myBarChart( "Faculty Awards", 0xffed622b):myPieChart("Faculty Awards", 0xffed622b),
+        children: <Widget>[
+          widget.graph == 1
+              ? myBarChart("Faculty Awards", 0xffed622b)
+              : mylineChart("Faculty Awards", 0xffed622b),
         ],
         staggeredTiles: [
           StaggeredTile.extent(2, 400.0),
@@ -284,16 +295,17 @@ class _ChartBuilderState extends State<ChartBuilder> {
   }
 }
 
-class LineChartValue{
+class LineChartValue {
   int xval;
   int yval;
 
-  LineChartValue(this.xval,this.yval);
+  LineChartValue(this.xval, this.yval);
 }
-class BarChartValue{
+
+class BarChartValue {
   String year;
   int yval;
-  BarChartValue(this.year,this.yval);
+  BarChartValue(this.year, this.yval);
 }
 
 class PieChartValue {

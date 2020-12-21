@@ -110,7 +110,13 @@ class _ViewsState extends State<Views> {
                         onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DepartmentList(),
+                            builder: (context) => DepartmentList(
+                              graph: 0,
+                              xlabel: "x wala",
+                              xvalues: [1, 4, 7, 9],
+                              ylabel: 'YYYYY',
+                              yvalues: [71, 94, 20, 47],
+                            ),
                           ),
                         ),
                         child: Text("A"),
@@ -119,7 +125,13 @@ class _ViewsState extends State<Views> {
                         onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DepartmentList(),
+                            builder: (context) => DepartmentList(
+                              graph: 1,
+                              xlabel: "x wala",
+                              xvalues: [2018, 2019, 2020],
+                              ylabel: 'YYYYY',
+                              yvalues: [71, 94, 101],
+                            ),
                           ),
                         ),
                         child: Text("B"),
