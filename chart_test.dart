@@ -1,5 +1,4 @@
 import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
@@ -29,13 +28,13 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: ChartBuilder("line"),
+      home: ChartBuilder(graph: "line"),
     );
   }
 }
 
 class ChartBuilder extends StatefulWidget {
-  ChartBuilder(this.graph,{this.xvaluesline,this.yvaluesline,this.xvaluesbar,this.yvaluesbar,this.xlabel,this.ylabel,this.taskpie,this.taskpercentagepie});
+  ChartBuilder({@required this.graph,this.xvaluesline,this.yvaluesline,this.xvaluesbar,this.yvaluesbar,this.xlabel,this.ylabel,this.taskpie,this.taskpercentagepie});
   List<DateTime> xvaluesline;
   List<int> yvaluesline;
   List<String> xvaluesbar;
@@ -205,6 +204,7 @@ class _ChartBuilderState extends State<ChartBuilder> {
                                     .OutsideJustification.middleDrawArea),
                           ],
                         animationDuration: Duration(seconds: 5),
+                        barRendererDecorator: new charts.BarLabelDecorator<String>(),
                       ),
                   )
                 ],
