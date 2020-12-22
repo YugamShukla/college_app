@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
@@ -27,52 +29,53 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: ChartBuilder(),
+      home: ChartBuilder("line"),
     );
   }
 }
 
 class ChartBuilder extends StatefulWidget {
-  ChartBuilder({this.xvalues,this.yvalues,this.graph});
-  List xvalues;
-  List yvalues;
-  int graph;
+  ChartBuilder(this.graph,{this.xvaluesline,this.yvaluesline,this.xvaluesbar,this.yvaluesbar,this.xlabel,this.ylabel,this.taskpie,this.taskpercentagepie});
+  List<DateTime> xvaluesline;
+  List<int> yvaluesline;
+  List<String> xvaluesbar;
+  List<int> yvaluesbar;
+  List<String> taskpie;
+  List<double> taskpercentagepie;
+  String graph;
+  String xlabel;
+  String ylabel;
   @override
   _ChartBuilderState createState() {
-    return _ChartBuilderState("ABC","ABC",[1,2,3,4],[25.0,25.0,25.0,25.0],0);
+    return _ChartBuilderState();
   }
 }
 
 class _ChartBuilderState extends State<ChartBuilder> {
-  List xvalues;
-  List yvalues;
-  int graph;
-  String xlabel;
-  String ylabel;
-  _ChartBuilderState(this.xlabel,this.ylabel,this.xvalues,this.yvalues,this.graph);
-  List<charts.Series<LineChartValue, int>> _seriesLineData;
+
+  List<charts.Series<LineChartValue, DateTime>> _seriesLineData;
   List<charts.Series<BarChartValue, String>> _seriesBarData;
   List<charts.Series<PieChartValue, String>> _seriesPieData;
   RandomColor _randomColor = RandomColor();
   _generatelineData(){
     var linedata = [
-      for(int i=0;i<xvalues.length;i++)
-        new LineChartValue(xvalues[i], yvalues[i])
+      for(int i=0;i<widget.xvaluesline.length;i++)
+        new LineChartValue(widget.xvaluesline[i], widget.yvaluesline[i])
     ];
     _seriesLineData.add(
       charts.Series(
         colorFn: (__, _) => charts.ColorUtil.fromDartColor(Color(0xff990099)),
         id: 'Line Graph',
         data: linedata,
-        domainFn: (LineChartValue chart, _) => chart.xval,
+        domainFn: (LineChartValue chart, _) => chart.time,
         measureFn: (LineChartValue chart, _) => chart.yval,
       ),
     );
   }
   _generatebarData(){
     var bar = [
-      for(int i=0;i<xvalues.length;i++)
-        new BarChartValue(xvalues[i].toString(), yvalues[i])
+      for(int i=0;i<widget.xvaluesbar.length;i++)
+        new BarChartValue(widget.xvaluesbar[i], widget.yvaluesbar[i])
     ];
     _seriesBarData.add(
       charts.Series(
@@ -88,8 +91,8 @@ class _ChartBuilderState extends State<ChartBuilder> {
   }
   _generatepiedata(){
     var pie = [
-      for(int i=0;i<xvalues.length;i++)
-        new PieChartValue(xvalues[i].toString(), yvalues[i], _randomColor.randomColor())
+      for(int i=0;i<widget.taskpie.length;i++)
+        new PieChartValue(widget.taskpie[i], widget.taskpercentagepie[i], _randomColor.randomColor())
     ];
     _seriesPieData.add(
       charts.Series(
@@ -107,17 +110,17 @@ class _ChartBuilderState extends State<ChartBuilder> {
   @override
   void initState(){
     super.initState();
-    _seriesLineData = List<charts.Series<LineChartValue, int>>();
+    _seriesLineData = List<charts.Series<LineChartValue, DateTime>>();
     _seriesBarData = List<charts.Series<BarChartValue, String>>();
     _seriesPieData = List<charts.Series<PieChartValue, String>>();
-    if(graph == 2)
+    if(widget.graph.toLowerCase() == "line")
       _generatelineData();
-    else if(graph == 1)
+    else if(widget.graph.toLowerCase() == "bar")
       _generatebarData();
-    else if(graph ==0)
+    else if(widget.graph.toLowerCase() =='pie')
       _generatepiedata();
   }
-  Material mylineChart(String title, int color) {
+  Material myLineChart(String title, int color) {
     return Material(
       color: Colors.white,
       elevation: 14.0,
@@ -140,18 +143,18 @@ class _ChartBuilderState extends State<ChartBuilder> {
                 SizedBox(
                     width: 350,
                     height: 350,
-                    child: charts.LineChart(
+                    child: charts.TimeSeriesChart(
                         _seriesLineData,
                         defaultRenderer: new charts.LineRendererConfig(
                             includeArea: true, stacked: true),
                         animate: true,
-                        animationDuration: Duration(seconds: 3),
+                        animationDuration: Duration(seconds: 2),
                         behaviors: [
-                          new charts.ChartTitle(xlabel,
+                          new charts.ChartTitle(widget.xlabel,
                               behaviorPosition: charts.BehaviorPosition.bottom,
                               titleOutsideJustification: charts
                                   .OutsideJustification.middleDrawArea),
-                          new charts.ChartTitle(ylabel,
+                          new charts.ChartTitle(widget.ylabel,
                               behaviorPosition: charts.BehaviorPosition.start,
                               titleOutsideJustification: charts
                                   .OutsideJustification.middleDrawArea),
@@ -192,11 +195,11 @@ class _ChartBuilderState extends State<ChartBuilder> {
                         _seriesBarData,
                         animate: true,
                           behaviors: [
-                            new charts.ChartTitle(xlabel,
+                            new charts.ChartTitle(widget.xlabel,
                                 behaviorPosition: charts.BehaviorPosition.bottom,
                                 titleOutsideJustification: charts
                                     .OutsideJustification.middleDrawArea),
-                            new charts.ChartTitle(ylabel,
+                            new charts.ChartTitle(widget.ylabel,
                                 behaviorPosition: charts.BehaviorPosition.start,
                                 titleOutsideJustification: charts
                                     .OutsideJustification.middleDrawArea),
@@ -274,7 +277,7 @@ class _ChartBuilderState extends State<ChartBuilder> {
         mainAxisSpacing: 12.0,
         padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
         children: <Widget>
-        [graph==1? myBarChart( "Faculty Awards", 0xffed622b):myPieChart("Faculty Awards", 0xffed622b),
+        [widget.graph=='bar'? myBarChart( "Faculty Awards", 0xffed622b):myLineChart("Faculty Awards", 0xffed622b),
         ],
         staggeredTiles: [
           StaggeredTile.extent(2, 400.0),
@@ -285,10 +288,10 @@ class _ChartBuilderState extends State<ChartBuilder> {
 }
 
 class LineChartValue{
-  int xval;
+  DateTime time;
   int yval;
 
-  LineChartValue(this.xval,this.yval);
+  LineChartValue(this.time,this.yval);
 }
 class BarChartValue{
   String year;
